@@ -1,6 +1,7 @@
 package com.example.StorLine.service;
 
 import com.example.StorLine.entity.Product;
+import com.example.StorLine.exception.ResourceNotFoundException;
 import com.example.StorLine.repository.ProductRepo;
 import org.springframework.stereotype.Service;
 
