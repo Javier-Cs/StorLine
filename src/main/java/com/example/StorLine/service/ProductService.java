@@ -1,13 +1,19 @@
 package com.example.StorLine.service;
 
+import com.example.StorLine.dtos.GetProduct;
+import com.example.StorLine.dtos.PostProduct;
+import com.example.StorLine.dtos.PutProduct;
 import com.example.StorLine.entity.Product;
 import com.example.StorLine.exception.ResourceNotFoundException;
 import com.example.StorLine.repository.ProductRepo;
+import com.example.StorLine.service.CrudGeneric.MetodMutation;
+import com.example.StorLine.service.CrudGeneric.MetodQuery;
+import com.example.StorLine.service.CrudGeneric.MetodSave;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class ProductService implements CrudGenerico<Product, Integer> {
+public class ProductService implements  MetodQuery<GetProduct, Integer>,MetodSave<PostProduct>, MetodMutation<PutProduct, Integer> {
 
     private final ProductRepo productoRepo;
 
@@ -15,31 +21,30 @@ public class ProductService implements CrudGenerico<Product, Integer> {
         this.productoRepo = productoRepo;
     }
 
-
     @Override
-    public List<Product> findAll() {
-        return productoRepo.findAll() ;
+    public List<GetProduct> findAll() {
+        return productoRepo.findAll();
     }
 
     @Override
-    public Product findById(Integer id) {
-        return productoRepo.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Book with id " + id + " not found")
-        );
-    }
-
-    @Override
-    public Product save(Product product) {
+    public GetProduct findById(Integer integer) {
         return null;
     }
 
     @Override
-    public void deleteById(Integer id) {
-
+    public PostProduct save(PostProduct postProduct) {
+        return null;
     }
 
     @Override
-    public Product update(Integer id, Product product) {
+    public PutProduct update(Integer integer, PutProduct putProduct) {
         return null;
     }
+
+    @Override
+    public void deleteById(Integer integer) {
+
+    }
+
+
 }
