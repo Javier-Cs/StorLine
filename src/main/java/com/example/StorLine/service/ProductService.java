@@ -9,42 +9,52 @@ import com.example.StorLine.repository.ProductRepo;
 import com.example.StorLine.service.CrudGeneric.MetodMutation;
 import com.example.StorLine.service.CrudGeneric.MetodQuery;
 import com.example.StorLine.service.CrudGeneric.MetodSave;
+import com.example.StorLine.tools.ProductMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class ProductService implements  MetodQuery<GetProduct, Integer>,MetodSave<PostProduct>, MetodMutation<PutProduct, Integer> {
+public class ProductService implements  MetodQuery<GetProduct, Integer>, MetodSave<Product, PostProduct>, MetodMutation<Product,PutProduct, Integer> {
 
     private final ProductRepo productoRepo;
+    private final ProductMapper productMapper;
 
-    public ProductService(ProductRepo productoRepo) {
+
+    public ProductService(ProductRepo productoRepo, ProductMapper productMapper) {
         this.productoRepo = productoRepo;
+        this.productMapper = productMapper;
     }
 
     @Override
     public List<GetProduct> findAll() {
-        return productoRepo.findAll();
+        List<Product> allProducts = productoRepo.findAll();
+        return productMapper.toDtoList(allProducts);
     }
 
     @Override
-    public GetProduct findById(Integer integer) {
+    public GetProduct findById(Integer id) {
+        Product product = productoRepo.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Product not found with id " + id)
+        );
+        return productMapper.toDto(product);
+    }
+
+
+    @Override
+    public Product save(PostProduct postProduct) {
+        return productoRepo.save(productMapper.aProductEntity(postProduct));
+    }
+
+
+    @Override
+    public Product update(Integer integer, PutProduct putProduct) {
         return null;
     }
 
     @Override
-    public PostProduct save(PostProduct postProduct) {
-        return null;
-    }
-
-    @Override
-    public PutProduct update(Integer integer, PutProduct putProduct) {
-        return null;
-    }
-
-    @Override
-    public void deleteById(Integer integer) {
+    public void deleteById(Integer id) {
+        productoRepo.deleteById(id);
 
     }
-
 
 }
