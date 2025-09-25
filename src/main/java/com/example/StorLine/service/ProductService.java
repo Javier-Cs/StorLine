@@ -47,8 +47,12 @@ public class ProductService implements  MetodQuery<GetProduct, Integer>, MetodSa
 
 
     @Override
-    public Product update(Integer integer, PutProduct putProduct) {
-        return null;
+    public Product update(Integer id, PutProduct putProduct) {
+        Product productToUp = productoRepo.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Product not found with id " + id)
+        );
+        productMapper.updateProductFromDto(putProduct, productToUp);
+        return productoRepo.save(productToUp);
     }
 
     @Override

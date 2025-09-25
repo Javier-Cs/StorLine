@@ -19,9 +19,7 @@ public interface ProductMapper  extends GenericQueryMapper<Product, GetProduct> 
     Product aProductEntity(PostProduct postProduct);
     PostProduct aDtoPost(Product product);
 
-    @Mapping(source = "PutProduct", target = "Product")
-    Product aProductEntity(PutProduct putProduct);
-    PutProduct toDtoPut(Product product);
+    void updateProductFromDto(PutProduct putProduct, @MappingTarget Product product);
 
 
     // Mapea una sola entidad a un DTO
