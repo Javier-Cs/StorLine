@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class ProductService implements  MetodQuery<GetProduct, Integer>, MetodSave<PostProduct, PostProduct>, MetodMutation<Product,PutProduct, Integer> {
+public class ProductService {
 
     private final ProductRepo productoRepo;
     private final ProductMapper productMapper;
@@ -26,40 +26,32 @@ public class ProductService implements  MetodQuery<GetProduct, Integer>, MetodSa
         this.productMapper = productMapper;
     }
 
-    @Override
-    public List<GetProduct> findAll() {
-        List<Product> allProducts = productoRepo.findAll();
-        return productMapper.toDtoList(allProducts);
+
+
+
+    public List<Product> findAll() {
+        return productoRepo.findAll();
     }
 
-    @Override
-    public GetProduct findById(Integer id) {
-        Product product = productoRepo.findById(id).orElseThrow(
+    public Product findById(Integer id) {
+        return productoRepo.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Product not found with id " + id)
         );
-        return productMapper.toDto(product);
     }
 
 
-    @Override
-    public PostProduct save(PostProduct postProduct) {
-        Product pro = productMapper.aProductEntity(postProduct);
-        pro.setCode(GenerarCode.generarCode());
-        Product product = productoRepo.save(pro);
-        return productMapper.aDtoPost(product);
+    public Product save(Product postProduct) {
+        postProduct.setCode(GenerarCode.generarCode());
+        return productoRepo.save(postProduct);
     }
 
-
-    @Override
-    public Product update(Integer id, PutProduct putProduct) {
+    public Product update(Integer id, Product putProduct) {
         Product productToUp = productoRepo.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Product not found with id " + id)
         );
-        productMapper.updateProductFromDto(putProduct, productToUp);
         return productoRepo.save(productToUp);
     }
 
-    @Override
     public void deleteById(Integer id) {
         productoRepo.deleteById(id);
 
