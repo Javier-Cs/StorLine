@@ -17,8 +17,8 @@ public class PostProduct {
     @Min(value = 1, message = "el valor de stock debe ser positivo")
     private Integer stock;
 
-    @NotNull(message = "El campo no puede ser nulo")
-    private boolean estado;
+//    @NotNull(message = "El campo no puede ser nulo")
+//    private boolean estado;
 
 //    @NotNull(message = "la fech")
 //    private Date date;

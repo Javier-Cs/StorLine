@@ -1,33 +1,56 @@
 package com.example.StorLine.controller;
 
 import com.example.StorLine.dtos.GetProduct;
+import com.example.StorLine.dtos.PostProduct;
+import com.example.StorLine.dtos.PutProduct;
+import com.example.StorLine.entity.Product;
 import com.example.StorLine.service.ProductService;
 import com.example.StorLine.tools.ProductMapper;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/app/v1")
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductMapper  productMapper;
 
-    public ProductController(ProductService productService, ProductMapper productMapper) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
-        this.productMapper = productMapper;
+    }
+
+    @GetMapping("/getProducts")
+    public ResponseEntity<List<GetProduct>> getAll() {
+        List<GetProduct> products = productService.findAll();
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/getById/{id}")
+    public GetProduct findById(@PathVariable("id") Integer id) {
+        return productService.findById(id);
+    }
+
+    @PostMapping("/saveProduct")
+    public ResponseEntity<PostProduct> saveProduct(@Valid @RequestBody PostProduct postProduct) {
+        PostProduct product = productService.save(postProduct);
+        return ResponseEntity.ok().body(product);
+    }
+
+    @PutMapping("/uodate/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable ("id") Integer id ,@Valid @RequestBody PutProduct upProduct) {
+       Product product = productService.update(id, upProduct);
+        return ResponseEntity.ok().body(product);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable Integer id) {
+        productService.deleteById(id);
     }
 
 
-//    @GetMapping("/getAll")
-//    public ResponseEntity<List<GetProduct>> getProducts() {
-//        List
-//        List<GetProduct> allProducts = productService.findAll();
-//        return ResponseEntity.ok().body(allProducts);
-//    }
+
 
 }

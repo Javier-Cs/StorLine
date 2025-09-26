@@ -15,7 +15,6 @@ public interface ProductMapper  extends GenericQueryMapper<Product, GetProduct> 
 
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    @Mapping(source = "PostProduct", target = "Product")
     Product aProductEntity(PostProduct postProduct);
     PostProduct aDtoPost(Product product);
 

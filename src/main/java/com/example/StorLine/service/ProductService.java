@@ -9,12 +9,13 @@ import com.example.StorLine.repository.ProductRepo;
 import com.example.StorLine.service.CrudGeneric.MetodMutation;
 import com.example.StorLine.service.CrudGeneric.MetodQuery;
 import com.example.StorLine.service.CrudGeneric.MetodSave;
+import com.example.StorLine.tools.GenerarCode;
 import com.example.StorLine.tools.ProductMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class ProductService implements  MetodQuery<GetProduct, Integer>, MetodSave<Product, PostProduct>, MetodMutation<Product,PutProduct, Integer> {
+public class ProductService implements  MetodQuery<GetProduct, Integer>, MetodSave<PostProduct, PostProduct>, MetodMutation<Product,PutProduct, Integer> {
 
     private final ProductRepo productoRepo;
     private final ProductMapper productMapper;
@@ -41,8 +42,11 @@ public class ProductService implements  MetodQuery<GetProduct, Integer>, MetodSa
 
 
     @Override
-    public Product save(PostProduct postProduct) {
-        return productoRepo.save(productMapper.aProductEntity(postProduct));
+    public PostProduct save(PostProduct postProduct) {
+        Product pro = productMapper.aProductEntity(postProduct);
+        pro.setCode(GenerarCode.generarCode());
+        Product product = productoRepo.save(pro);
+        return productMapper.aDtoPost(product);
     }
 
 
